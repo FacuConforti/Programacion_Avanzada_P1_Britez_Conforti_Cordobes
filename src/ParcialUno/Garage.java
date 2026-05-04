@@ -3,114 +3,92 @@ package ParcialUno;
 import java.util.ArrayList;
 
 public class Garage {
-	
-	private int capacidadMaxima;
-	private ArrayList<Vehiculo> vehiculos;
-	
-	//Constructor
-	
-	public Garage(int capacidadMaxima) {
-		this.capacidadMaxima = capacidadMaxima;
-		this.vehiculos = new ArrayList<>();
-	}
+    private int capacidadMaxima;
+    private ArrayList<Vehiculo> vehiculos;
+    private double recaudacionTotal = 0;
 
-	//Calcular espacio ocupado
-	
-	public int calcularEspacioOcupado() {
-	    int total = 0;
+    public Garage(int capacidadMaxima) {
+        this.capacidadMaxima = capacidadMaxima;
+        this.vehiculos = new ArrayList<>();
+    }
 
-	    for (Vehiculo v : vehiculos) {
-	        total += v.getEspacio(); 
-	    }
+    public int calcularEspacioOcupado() {
+        int total = 0;
+        for (Vehiculo v : vehiculos) {
+            total += v.getEspacio();
+        }
+        return total;
+    }
 
-	    return total;
-	}
-	
-	//Ingresar vehiculos y las validaciones
-	public boolean ingresarVehiculo(Vehiculo v, int horas) {
-		
-		//Validar que haya espacio
-		
-		if(calcularEspacioOcupado() + v.getEspacio() > capacidadMaxima) {
-			
-			System.out.println("\n No hay ma espacio disponible.");
-			return false;
-		
-		}
-		
-		//Validar que la aptente no este duplicada
-		for (Vehiculo vehMatricula : vehiculos) {
-			
-			if (vehMatricula.matricula.equals(v.matricula)) {
-				System.out.println("\n Patente duplicada, no se permite el ingreso.");
-				return false;
-			}
-			
-		}
-		
-		vehiculos.add(v);
-		System.out.println("\n Se agrego el vehiculo correctamente: " + v.modelo);
-		System.out.println("Ocupa: " + v.getEspacio());
-		
-		return true; //SACAR FALSE, ES DE TEST
-	}
-	
-	//Retirar vehiculo
-	public boolean retirarVehiculo(String matricula) {
-		
-		//Validar que el vehiculo este
-	    for (Vehiculo v : vehiculos) {
-	        
-	        if (v.matricula.equals(matricula)) {
-	            vehiculos.remove(v);
-	            System.out.println("\nVehiculo retirado correctamente");
-	            return true;
-	        }
-	    }
+    public boolean ingresarVehiculo(Vehiculo v) {
+        // Validar espacio
+        if (calcularEspacioOcupado() + v.getEspacio() > capacidadMaxima) {
+            System.out.println("\nError: No hay espacio disponible para este vehículo.");
+            return false;
+        }
 
-	    System.out.println("\nPatente no encontrada");
-	    return false;
-	}
-	
-	//Mostrar vehiculos
-	
-	public void mostrarVehiculos() {
+        // Validar patente duplicada
+        for (Vehiculo veh : vehiculos) {
+            if (veh.matricula.equalsIgnoreCase(v.matricula)) {
+                System.out.println("\nError: La patente " + v.matricula + " ya está en el garage.");
+                return false;
+            }
+        }
 
-	    if (vehiculos.isEmpty()) {
-	        System.out.println("No hay vehiculos en el garage");
-	        return;
-	    }
-	    
-	    //Muestro la informacion de los vehiculos
-	    for (Vehiculo v : vehiculos) {
-	    	
-	    	System.out.println("\n  ---   ");
-	        System.out.println("Patente: " + v.matricula);
-	        System.out.println("Marca: " + v.marca);
-	        System.out.println("Modelo: " + v.modelo);
-	        System.out.println("  ---   ");
-	        
-	    }
-	    
-	}
-	
-	//Calcular espacio garage
-	public int calcularEspacioLibre() {
-	    return capacidadMaxima - calcularEspacioOcupado();
-	}
-	
-	//Estado general del agarage
-	
-	public void mostrarEstadoGarage() {
-		
-		System.out.println("\n --- ");
-	    System.out.println("Capacidad total: " + capacidadMaxima);
-	    System.out.println("Espacio ocupado: " + calcularEspacioOcupado());
-	    System.out.println("Espacio libre: " + calcularEspacioLibre());
-	    System.out.println("Cantidad de vehículos: " + vehiculos.size());
-	    System.out.println(" --- ");
-	}
-	
-	
+        vehiculos.add(v);
+        System.out.println("\nVehículo ingresado con éxito: " + v.modelo);
+        return true;
+    }
 
+    public void retirarVehiculo(String matricula) {
+        Vehiculo encontrado = null;
+
+        // Buscamos el vehículo primero
+        for (Vehiculo v : vehiculos) {
+            if (v.matricula.equalsIgnoreCase(matricula)) {
+                encontrado = v;
+                break; 
+            }
+        }
+
+        if (encontrado != null) {
+            // Obtenemos las horas que guardamos al ingresar
+            int horas = encontrado.getHorasEstimadas();
+            double pagar = encontrado.calcularTarifa(horas);
+            
+            recaudacionTotal += pagar;
+            vehiculos.remove(encontrado); // Borramos fuera del bucle
+            
+            System.out.println("\nVehículo con patente " + matricula + " retirado.");
+            System.out.println("Total a pagar por " + horas + " horas: $" + pagar);
+        } else {
+            System.out.println("\nError: Vehículo no encontrado.");
+        }
+    }
+
+    public void mostrarVehiculos() {
+        if (vehiculos.isEmpty()) {
+            System.out.println("\nEl garage está vacío.");
+            return;
+        }
+        System.out.println("\n--- Lista de Vehículos ---");
+        for (Vehiculo v : vehiculos) {
+            System.out.println("Patente: " + v.matricula + " | Marca: " + v.marca + " | Modelo: " + v.modelo);
+        }
+    }
+
+    public void mostrarEstadoGarage() {
+        int ocupado = calcularEspacioOcupado();
+        System.out.println("\n--- Estado del Garage ---");
+        System.out.println("Capacidad Total: " + capacidadMaxima);
+        System.out.println("Espacio Ocupado: " + ocupado);
+        System.out.println("Espacio Libre: " + (capacidadMaxima - ocupado));
+        System.out.println("Vehículos: " + vehiculos.size());
+    }
+
+    public void imprimirCierreDeCaja() {
+        System.out.println("\n********** CIERRE DE SESIÓN **********");
+        System.out.println("Recaudación total acumulada: $" + recaudacionTotal);
+        System.out.println("**************************************");
+    }
 }
