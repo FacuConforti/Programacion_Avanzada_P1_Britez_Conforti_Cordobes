@@ -5,6 +5,7 @@ public abstract class Vehiculo {
 	protected String matricula;
     protected String marca;
     protected String modelo;
+    private int horasEstimadas;
     
     public Vehiculo(String matricula, String marca, String modelo) {
         this.matricula = matricula;
@@ -15,4 +16,12 @@ public abstract class Vehiculo {
     public abstract double calcularTarifa(int horas);
     
     public abstract int getEspacio();
+    
+    public void setHorasEstimadas(int horas) { 
+		this.horasEstimadas = horas;	
+	};
+	
+	public int getHorasEstimadas(){
+		return this.horasEstimadas;
+	}
 }
