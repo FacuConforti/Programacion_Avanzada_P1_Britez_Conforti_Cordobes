@@ -6,6 +6,7 @@ class Camion extends Vehiculo {
         super(matricula, marca, modelo);
     }
 
+    @Override
     public double calcularTarifa(int horas) {
         return horas * 1500;
     }

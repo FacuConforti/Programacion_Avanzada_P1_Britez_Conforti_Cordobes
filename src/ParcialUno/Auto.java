@@ -6,6 +6,7 @@ class Auto extends Vehiculo {
         super(matricula, marca, modelo);
     }
 
+    @Override
     public double calcularTarifa(int horas) {
         return horas * 1000;
     }
@@ -13,5 +14,7 @@ class Auto extends Vehiculo {
     public int getEspacio() {
         return 2;
     }
+    
+    
     
 }

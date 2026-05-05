@@ -26,7 +26,7 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("\nTipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
+                    System.out.println("Tipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
                     int tipo = input.nextInt();
                     input.nextLine();
 

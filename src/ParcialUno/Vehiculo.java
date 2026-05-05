@@ -1,6 +1,6 @@
 package ParcialUno;
 
-public abstract class Vehiculo {
+public abstract class Vehiculo implements CalculoHoras {
 	
 	protected String matricula;
     protected String marca;
@@ -12,14 +12,12 @@ public abstract class Vehiculo {
         this.marca = marca;
         this.modelo = modelo;
     }
-    
-    public abstract double calcularTarifa(int horas);
-    
+        
     public abstract int getEspacio();
     
     public void setHorasEstimadas(int horas) { 
 		this.horasEstimadas = horas;	
-	};
+	}
 	
 	public int getHorasEstimadas(){
 		return this.horasEstimadas;
