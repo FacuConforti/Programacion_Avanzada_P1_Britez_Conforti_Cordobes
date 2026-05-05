@@ -8,7 +8,8 @@ public class Main {
         Scanner input = new Scanner(System.in);
         Garage garageUno = new Garage(20);
         int opcion = 0;
-
+        int horas;
+        
         while (opcion != 6) {
             System.out.println("\n===== SISTEMA DE GARAGE =====");
             System.out.println("1 - Ingresar vehículo");
@@ -18,6 +19,7 @@ public class Main {
             System.out.println("5 - Reporte");
             System.out.println("6 - Salir");
             System.out.print("Seleccione una opción: ");
+           
             
             opcion = input.nextInt();
             input.nextLine(); // Limpiar buffer
@@ -35,7 +37,16 @@ public class Main {
                     System.out.print("Modelo: ");
                     String modelo = input.nextLine();
                     System.out.print("Horas estimadas: ");
-                    int horas = input.nextInt();
+                    horas = input.nextInt();
+                    
+                    while (horas <= 0) {
+                    	
+                    	System.out.print("Error. Las horas deben ser mayor a 0");
+                    	System.out.print("Horas estimadas: ");
+                        horas = input.nextInt();
+                    	
+                    }
+                    
                     input.nextLine();
 
                     Vehiculo nuevo = null;
@@ -77,11 +88,13 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opción no valida.");
             }
         }
+        
         garageUno.imprimirCierreDeCaja();
         System.out.println("¡Hasta luego!");
         input.close();
+        
     }
 }
