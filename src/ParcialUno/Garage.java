@@ -105,27 +105,32 @@ public class Garage {
         System.out.println("Vehículos: " + vehiculos.size());
     }
 
-    public void imprimirCierreDeCaja() {
-        System.out.println("\n********** CIERRE DE SESIÓN **********");
-        System.out.println("Recaudación total acumulada: $" + recaudacionTotal);
-        System.out.println("**************************************");
-    }
     
     public void generarReporte(boolean esCierreFinal) {
         String titulo = esCierreFinal ? "CIERRE DE SESIÓN (FINAL)" : "REPORTE PARCIAL DE CAJA";
         
+        // calculo de recaudacion proyectada 
+        double recaudacionEnCurso = 0;
+        for (Vehiculo v : vehiculos) {
+            recaudacionEnCurso += v.calcularTarifa(v.getHorasEstimadas());
+        }
+
         System.out.println("\n********** " + titulo + " **********");
-        System.out.println("DETALLE POR CATEGORÍA:");
+        System.out.println("CAJA REAL (Vehiculos que salieron):");
         System.out.println("- Autos: " + cantAutos + " | Subtotal: $" + recaudacionAutos);
         System.out.println("- Motos: " + cantMotos + " | Subtotal: $" + recaudacionMotos);
         System.out.println("- Camiones: " + cantCamiones + " | Subtotal: $" + recaudacionCamiones);
-        System.out.println("--------------------------------------");
-        System.out.println("TOTAL ACUMULADO: $" + recaudacionTotal);
+        System.out.println("TOTAL EN CAJA: $" + recaudacionTotal);
         
-        if (esCierreFinal) {
-            System.out.println("Estado: Sesión finalizada correctamente.");
-        } else {
+        if (!esCierreFinal) {
+            System.out.println("--------------------------------------");
+            System.out.println("GANANCIA PROYECTADA (Vehículos adentro):");
+            System.out.println("- Total a cobrar: $" + recaudacionEnCurso);
+            System.out.println("- Total Estimado (Caja + Proyectado): $" + (recaudacionTotal + recaudacionEnCurso));
             System.out.println("Estado: El garage sigue operativo.");
+        } else {
+            System.out.println("--------------------------------------");
+            System.out.println("Estado: Sesión finalizada correctamente.");
         }
         System.out.println("**************************************");
     }
