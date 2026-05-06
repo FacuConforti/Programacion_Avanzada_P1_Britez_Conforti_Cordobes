@@ -80,7 +80,7 @@ public class Main {
                     break;
 
                 case 5:
-                    garageUno.imprimirCierreDeCaja();
+                    garageUno.generarReporte(false); // reporte parcial
                     break;
 
                 case 6:
@@ -92,7 +92,7 @@ public class Main {
             }
         }
         
-        garageUno.imprimirCierreDeCaja();
+        garageUno.generarReporte(true);
         System.out.println("¡Hasta luego!");
         input.close();
         

@@ -1,6 +1,6 @@
 package ParcialUno;
 
-class Camion extends Vehiculo {
+public class Camion extends Vehiculo {
 
     public Camion(String matricula, String marca, String modelo) {
         super(matricula, marca, modelo);

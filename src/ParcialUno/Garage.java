@@ -6,6 +6,12 @@ public class Garage {
     private int capacidadMaxima;
     private ArrayList<Vehiculo> vehiculos;
     private double recaudacionTotal = 0;
+    private int cantAutos = 0;
+    private int cantMotos = 0;
+    private int cantCamiones = 0;
+    double recaudacionAutos= 0 ;
+    double recaudacionMotos= 0;
+    double recaudacionCamiones= 0;
 
     public Garage(int capacidadMaxima) {
         this.capacidadMaxima = capacidadMaxima;
@@ -36,28 +42,38 @@ public class Garage {
         }
 
         vehiculos.add(v);
-        System.out.println("\nVehículo ingresado con éxito: " + v.modelo);
+        System.out.println("\nVehículo ingresado con éxito: " + v.matricula + ", " + v.marca + ", " + v.modelo);
         return true;
     }
 
     public void retirarVehiculo(String matricula) {
         Vehiculo encontrado = null;
 
-        // Buscamos el vehículo primero
+        // Buscar vehiculo 
         for (Vehiculo v : vehiculos) {
             if (v.matricula.equalsIgnoreCase(matricula)) {
                 encontrado = v;
                 break; 
             }
         }
-
+      
         if (encontrado != null) {
-            // Obtenemos las horas que guardamos al ingresar
             int horas = encontrado.getHorasEstimadas();
             double pagar = encontrado.calcularTarifa(horas);
             
+            // acumulador de vehiculos para generar el reporte final
+            if (encontrado instanceof Auto) {
+                cantAutos++;
+                recaudacionAutos += pagar;
+            } else if (encontrado instanceof Moto) {
+                cantMotos++;
+                recaudacionMotos += pagar;
+            } else if (encontrado instanceof Camion) {
+                cantCamiones++;
+                recaudacionCamiones += pagar;
+            }
             recaudacionTotal += pagar;
-            vehiculos.remove(encontrado); // Borramos fuera del bucle
+            vehiculos.remove(encontrado); // eliminar vehiculo de la lista
             
             System.out.println("\nVehículo con patente " + matricula + " retirado.");
             System.out.println("Total a pagar por " + horas + " horas: $" + pagar);
@@ -86,9 +102,22 @@ public class Garage {
         System.out.println("Vehículos: " + vehiculos.size());
     }
 
-    public void imprimirCierreDeCaja() {
-        System.out.println("\n********** CIERRE DE SESIÓN **********");
-        System.out.println("Recaudación total acumulada: $" + recaudacionTotal);
+    public void generarReporte(boolean esCierreFinal) {
+        String titulo = esCierreFinal ? "CIERRE DE SESIÓN (FINAL)" : "REPORTE PARCIAL DE CAJA";
+        
+        System.out.println("\n********** " + titulo + " **********");
+        System.out.println("DETALLE POR CATEGORÍA:");
+        System.out.println("- Autos: " + cantAutos + " | Subtotal: $" + recaudacionAutos);
+        System.out.println("- Motos: " + cantMotos + " | Subtotal: $" + recaudacionMotos);
+        System.out.println("- Camiones: " + cantCamiones + " | Subtotal: $" + recaudacionCamiones);
+        System.out.println("--------------------------------------");
+        System.out.println("TOTAL ACUMULADO: $" + recaudacionTotal);
+        
+        if (esCierreFinal) {
+            System.out.println("Estado: Sesión finalizada correctamente.");
+        } else {
+            System.out.println("Estado: El garage sigue operativo.");
+        }
         System.out.println("**************************************");
     }
 }
