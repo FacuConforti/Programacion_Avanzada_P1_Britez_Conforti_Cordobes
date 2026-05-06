@@ -8,6 +8,7 @@ public class Main { //PRUEBA PARA GIT NO SUBIO EL COMMIT
         Scanner input = new Scanner(System.in);
         Garage garageUno = new Garage(20);
         int opcion = 0;
+        int tipo;
         int horas;
         
         while (opcion != 6) {
@@ -21,16 +22,32 @@ public class Main { //PRUEBA PARA GIT NO SUBIO EL COMMIT
             System.out.print("Seleccione una opción: ");
            
             
-            opcion = input.nextInt();
-            input.nextLine(); // Limpiar buffer
+            try {
+            	
+                opcion = input.nextInt();
+                input.nextLine(); //Limpiamos buffer
+                
+            } catch (Exception e) {
+            	
+                System.out.println("Error: debe ingresar un numero.");
+                input.nextLine();//Limpiamos buffer
+                continue;
+                
+            }
 
             switch (opcion) {
                 case 1:
                     try {
                         System.out.println("Tipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
-                        int tipo = input.nextInt();
+                        tipo = input.nextInt();
                         input.nextLine();
-
+                        
+                        while(tipo < 1 || tipo > 3) {
+                        	System.out.println("Tipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
+                            tipo = input.nextInt();
+                            input.nextLine();
+                        }
+                        
                         System.out.print("Patente: ");
                         String matricula = input.nextLine();
 

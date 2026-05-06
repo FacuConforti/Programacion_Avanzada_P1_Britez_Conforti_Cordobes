@@ -6,6 +6,7 @@ public class Garage {
     private int capacidadMaxima;
     private ArrayList<Vehiculo> vehiculos;
     private double recaudacionTotal = 0;
+    
     //Contadores
     private int cantAutos = 0;
     private int cantMotos = 0;
