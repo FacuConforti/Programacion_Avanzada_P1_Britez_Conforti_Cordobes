@@ -6,7 +6,15 @@ public class Garage {
     private int capacidadMaxima;
     private ArrayList<Vehiculo> vehiculos;
     private double recaudacionTotal = 0;
-
+    //Contadores
+    private int cantAutos = 0;
+    private int cantMotos = 0;
+    private int cantCamiones = 0;
+    double recaudacionAutos= 0 ;
+    double recaudacionMotos= 0;
+    double recaudacionCamiones= 0;
+    
+    
     public Garage(int capacidadMaxima) {
         this.capacidadMaxima = capacidadMaxima;
         this.vehiculos = new ArrayList<>();
@@ -33,7 +41,8 @@ public class Garage {
                 throw new PatenteDuplicadaException("Patente duplicada: " + v.matricula);
             }
         }
-
+        
+        System.out.println("\nVehiculo ingresado con exito: " + v.matricula + ", " + v.marca + ", " + v.modelo);
         vehiculos.add(v);
         return true;
     }
@@ -57,7 +66,19 @@ public class Garage {
 
         int horas = encontrado.getHorasEstimadas();
         double pagar = encontrado.calcularTarifa(horas);
-
+        
+     // acumulador de vehiculos para generar el reporte final
+        if (encontrado instanceof Auto) {
+            cantAutos++;
+            recaudacionAutos += pagar;
+        } else if (encontrado instanceof Moto) {
+            cantMotos++;
+            recaudacionMotos += pagar;
+        } else if (encontrado instanceof Camion) {
+            cantCamiones++;
+            recaudacionCamiones += pagar;
+        }
+        
         recaudacionTotal += pagar;
         vehiculos.remove(encontrado);
 
@@ -89,4 +110,24 @@ public class Garage {
         System.out.println("Recaudación total acumulada: $" + recaudacionTotal);
         System.out.println("**************************************");
     }
+    
+    public void generarReporte(boolean esCierreFinal) {
+        String titulo = esCierreFinal ? "CIERRE DE SESIÓN (FINAL)" : "REPORTE PARCIAL DE CAJA";
+        
+        System.out.println("\n********** " + titulo + " **********");
+        System.out.println("DETALLE POR CATEGORÍA:");
+        System.out.println("- Autos: " + cantAutos + " | Subtotal: $" + recaudacionAutos);
+        System.out.println("- Motos: " + cantMotos + " | Subtotal: $" + recaudacionMotos);
+        System.out.println("- Camiones: " + cantCamiones + " | Subtotal: $" + recaudacionCamiones);
+        System.out.println("--------------------------------------");
+        System.out.println("TOTAL ACUMULADO: $" + recaudacionTotal);
+        
+        if (esCierreFinal) {
+            System.out.println("Estado: Sesión finalizada correctamente.");
+        } else {
+            System.out.println("Estado: El garage sigue operativo.");
+        }
+        System.out.println("**************************************");
+    }
+    
 }

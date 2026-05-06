@@ -98,7 +98,12 @@ public class Main { //PRUEBA PARA GIT NO SUBIO EL COMMIT
                     break;
 
                 case 5:
-                    garageUno.imprimirCierreDeCaja();
+                	
+                	System.out.println("/n CAJA ACTUAL: ");
+                	garageUno.imprimirCierreDeCaja();
+                	
+                	System.out.println("/n REPORTE: ");
+                	garageUno.generarReporte(true);
                     break;
 
                 case 6:
@@ -111,6 +116,7 @@ public class Main { //PRUEBA PARA GIT NO SUBIO EL COMMIT
         }
         
         garageUno.imprimirCierreDeCaja();
+        garageUno.generarReporte(true);
         System.out.println("¡Hasta luego!");
         input.close();
         
