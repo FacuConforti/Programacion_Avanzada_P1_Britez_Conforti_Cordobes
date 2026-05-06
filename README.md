@@ -15,7 +15,7 @@ Este proyecto implementa un sistema de gestión de un garage utilizando Programa
 
 ---
 
-## ⚙️ Funcionalidades
+##  Funcionalidades
 
 -  Ingreso de vehículos
   - Validación de espacio disponible
