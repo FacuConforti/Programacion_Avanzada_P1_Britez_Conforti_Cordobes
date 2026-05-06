@@ -20,50 +20,48 @@ public class Garage {
         return total;
     }
 
-    public boolean ingresarVehiculo(Vehiculo v) {
-        // Validar espacio
+    //INGRESAR VEHICULO CON LAS EXCEPCIONES 
+    public boolean ingresarVehiculo(Vehiculo v) 
+            throws GarageLlenoException, PatenteDuplicadaException {
+
         if (calcularEspacioOcupado() + v.getEspacio() > capacidadMaxima) {
-            System.out.println("\nError: No hay espacio disponible para este vehículo.");
-            return false;
+            throw new GarageLlenoException("No hay espacio disponible.");
         }
 
-        // Validar patente duplicada
         for (Vehiculo veh : vehiculos) {
             if (veh.matricula.equalsIgnoreCase(v.matricula)) {
-                System.out.println("\nError: La patente " + v.matricula + " ya está en el garage.");
-                return false;
+                throw new PatenteDuplicadaException("Patente duplicada: " + v.matricula);
             }
         }
 
         vehiculos.add(v);
-        System.out.println("\nVehículo ingresado con éxito: " + v.modelo);
         return true;
     }
 
-    public void retirarVehiculo(String matricula) {
+    //RETIRAR VEHICULO CON LAS EXCEPCIONES
+    public void retirarVehiculo(String matricula) 
+            throws VehiculoNoEncontradoException {
+
         Vehiculo encontrado = null;
 
-        // Buscamos el vehículo primero
         for (Vehiculo v : vehiculos) {
             if (v.matricula.equalsIgnoreCase(matricula)) {
                 encontrado = v;
-                break; 
+                break;
             }
         }
 
-        if (encontrado != null) {
-            // Obtenemos las horas que guardamos al ingresar
-            int horas = encontrado.getHorasEstimadas();
-            double pagar = encontrado.calcularTarifa(horas);
-            
-            recaudacionTotal += pagar;
-            vehiculos.remove(encontrado); // Borramos fuera del bucle
-            
-            System.out.println("\nVehículo con patente " + matricula + " retirado.");
-            System.out.println("Total a pagar por " + horas + " horas: $" + pagar);
-        } else {
-            System.out.println("\nError: Vehículo no encontrado.");
+        if (encontrado == null) {
+            throw new VehiculoNoEncontradoException("Vehículo no encontrado.");
         }
+
+        int horas = encontrado.getHorasEstimadas();
+        double pagar = encontrado.calcularTarifa(horas);
+
+        recaudacionTotal += pagar;
+        vehiculos.remove(encontrado);
+
+        System.out.println("Total a pagar: $" + pagar);
     }
 
     public void mostrarVehiculos() {

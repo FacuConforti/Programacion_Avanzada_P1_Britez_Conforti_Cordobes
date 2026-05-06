@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws HorasInvalidasException, GarageLlenoException, PatenteDuplicadaException, VehiculoNoEncontradoException {
         Scanner input = new Scanner(System.in);
         Garage garageUno = new Garage(20);
         int opcion = 0;
@@ -26,51 +26,69 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Tipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
-                    int tipo = input.nextInt();
-                    input.nextLine();
+                    try {
+                        System.out.println("Tipo: 1-Auto (2 esp) | 2-Moto (1 esp) | 3-Camion (4 esp)");
+                        int tipo = input.nextInt();
+                        input.nextLine();
 
-                    System.out.print("Patente: ");
-                    String matricula = input.nextLine();
-                    System.out.print("Marca: ");
-                    String marca = input.nextLine();
-                    System.out.print("Modelo: ");
-                    String modelo = input.nextLine();
-                    System.out.print("Horas estimadas: ");
-                    horas = input.nextInt();
-                    
-                    while (horas <= 0) {
-                    	
-                    	System.out.print("Error. Las horas deben ser mayor a 0");
-                    	System.out.print("Horas estimadas: ");
+                        System.out.print("Patente: ");
+                        String matricula = input.nextLine();
+
+                        System.out.print("Marca: ");
+                        String marca = input.nextLine();
+
+                        System.out.print("Modelo: ");
+                        String modelo = input.nextLine();
+
+                        System.out.print("Horas estimadas: ");
                         horas = input.nextInt();
-                    	
-                    }
-                    
-                    input.nextLine();
+                        input.nextLine();
 
-                    Vehiculo nuevo = null;
-                    if (tipo == 1) nuevo = new Auto(matricula, marca, modelo);
-                    else if (tipo == 2) nuevo = new Moto(matricula, marca, modelo);
-                    else if (tipo == 3) nuevo = new Camion(matricula, marca, modelo);
-
-                    if (nuevo != null) {
-                        nuevo.setHorasEstimadas(horas); 
-                        boolean exito = garageUno.ingresarVehiculo(nuevo);
-                        if (exito) {
-                            System.out.println("Costo proyectado: $" + nuevo.calcularTarifa(horas));
+                        //Validacin con excepción
+                        if (horas <= 0) {
+                            throw new HorasInvalidasException("Las horas deben ser mayor a 0");
                         }
-                    } else {
-                        System.out.println("Tipo de vehículo inválido.");
+
+                        Vehiculo nuevo = null;
+
+                        if (tipo == 1) nuevo = new Auto(matricula, marca, modelo);
+                        else if (tipo == 2) nuevo = new Moto(matricula, marca, modelo);
+                        else if (tipo == 3) nuevo = new Camion(matricula, marca, modelo);
+
+                        if (nuevo == null) {
+                            System.out.println("Tipo de vehículo inválido.");
+                            break;
+                        }
+
+                        nuevo.setHorasEstimadas(horas);
+
+                        garageUno.ingresarVehiculo(nuevo);
+
+                        System.out.println("Costo proyectado: $" + nuevo.calcularTarifa(horas));
+
+                    } catch (HorasInvalidasException | GarageLlenoException | PatenteDuplicadaException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
+
                     break;
 
                 case 2:
+                	
                     System.out.print("Ingrese patente a retirar: ");
+                    
                     String patRetirar = input.nextLine();
-                    garageUno.retirarVehiculo(patRetirar);
-                    break;
 
+                    try {
+                        garageUno.retirarVehiculo(patRetirar);
+                        
+                    } catch (VehiculoNoEncontradoException e) {
+                    	
+                        System.out.println("Error: " + e.getMessage());
+                        
+                    }
+                    
+                    break;
+                    
                 case 3:
                     garageUno.mostrarVehiculos();
                     break;
