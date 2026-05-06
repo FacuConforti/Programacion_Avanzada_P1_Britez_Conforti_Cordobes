@@ -2,7 +2,7 @@ package ParcialUno;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main { //PRUEBA PARA GIT NO SUBIO EL COMMIT
 
     public static void main(String[] args) throws HorasInvalidasException, GarageLlenoException, PatenteDuplicadaException, VehiculoNoEncontradoException {
         Scanner input = new Scanner(System.in);
