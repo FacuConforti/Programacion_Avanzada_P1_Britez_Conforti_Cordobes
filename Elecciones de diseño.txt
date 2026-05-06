@@ -1,0 +1,13 @@
+El sistema fue diseñado pensando en como debería funcionar un sistema de garages realista, separando responsabilidades entre distintas clases para lograr un código ordenado, reutilizable y fácil de mantener.
+
+Se definió una clase abstracta Vehiculo que representa la estructura general de cualquier vehículo, incluyendo atributos comunes como matrícula, marca y modelo. A partir de esta clase se implementan las subclases Auto, Moto y Camion, aplicando herencia para reutilizar código y especializar el comportamiento según el tipo de vehículo.
+
+El cálculo de la tarifa y el espacio ocupado se resuelve mediante polimorfismo. Cada tipo de vehículo redefine estos métodos según sus características, permitiendo que el sistema trabaje con objetos de tipo Vehiculo sin necesidad de conocer su tipo específico.
+
+La clase Garage se encarga de la lógica del negocio. Administra el ingreso y retiro de vehículos, valida condiciones como disponibilidad de espacio y duplicación de patentes, y calcula la recaudación. También mantiene una colección de vehículos utilizando un ArrayList, lo que permite manejar dinámicamente los elementos almacenados.
+
+El manejo de errores se realiza mediante excepciones personalizadas, como GarageLlenoException, PatenteDuplicadaException, VehiculoNoEncontradoException y HorasInvalidasException. Estas excepciones se lanzan desde la clase Garage y se capturan en la clase Main, logrando una separación clara entre la lógica del sistema y la interacción con el usuario.
+
+La clase Main actúa como punto de entrada del sistema, gestionando la entrada de datos del usuario mediante consola y controlando el flujo del programa a través de un menú interactivo.
+
+Finalmente, el sistema incluye funcionalidades adicionales como reportes de recaudación total y proyectada, diferenciando entre ingresos reales y estimados, lo que mejora la utilidad del sistema.
